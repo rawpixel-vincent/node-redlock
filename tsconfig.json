@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "lib": ["es2020"],
-    "target": "es2018",
-    "module": "es2020",
+    "lib": ["es2023"],
+    "target": "ESNext",
+    "module": "esnext",
     "outDir": "./dist/esm",
     "declaration": true,
     "declarationDir": "./dist",
@@ -11,7 +11,7 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": false,
-    "sourceMap": true
+    "sourceMap": true,
   },
   "include": ["./src/**/*"]
 }

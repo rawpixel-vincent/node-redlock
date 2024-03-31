@@ -26,4 +26,4 @@ jobs:
         run: docker compose run --rm --no-TTY runner yarn test
       - name: Stop containers
         if: always()
-        run: docker compose down
+        run: docker compose down --volumes --remove-orphans --timeout 0

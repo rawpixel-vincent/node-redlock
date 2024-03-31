@@ -1,7 +1,7 @@
 {
-  "name": "redlock",
-  "version": "v5.0.0-beta.2",
-  "description": "A node.js redlock implementation for distributed redis locks",
+  "name": "redfork",
+  "version": "0.1325.13",
+  "description": "A node.js red fork",
   "license": "MIT",
   "author": {
     "name": "Mike Marcacci",
@@ -22,10 +22,8 @@
   },
   "keywords": [
     "nodejs",
-    "redlock",
-    "distributed",
-    "lock",
-    "redis"
+    "red",
+    "fork"
   ],
   "files": [
     "dist/index.d.ts",
@@ -37,39 +35,38 @@
     "dist/cjs/index.js.map"
   ],
   "engines": {
-    "node": ">=12"
+    "node": ">=20"
   },
-  "browserslist": "node >= 12",
+  "browserslist": "node >= 20",
   "ava": {
     "nodeArguments": [
       "--experimental-specifier-resolution=node"
     ]
   },
   "devDependencies": {
-    "@types/node": "^17.0.21",
-    "@typescript-eslint/eslint-plugin": "^5.13.0",
-    "@typescript-eslint/parser": "^5.13.0",
-    "ava": "^4.1.0",
-    "eslint": "^8.10.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "ioredis": "^5.2.3",
-    "nodemon": "^2.0.15",
-    "prettier": "^2.5.1",
-    "typescript": "~4.6.2"
+    "@types/node": "^20.12.2",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
+    "ava": "^6.1.2",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "ioredis": "^5.3.2",
+    "prettier": "^3.2.5",
+    "typescript": "~5.4.3"
   },
   "scripts": {
     "format": "prettier --list-different --write '**/*.{json,yml,md,ts}'",
     "lint": "prettier -c '**/*.{json,yml,md,ts}' && eslint src --ext ts",
     "build": "rm -f dist/**/*.{js,js.map,d.ts} && tsc && tsc -p tsconfig.cjs.json",
     "build:development": "rm -f dist/**/*.{js,js.map,d.ts} && tsc --watch",
-    "test": "cd dist/esm && ava --verbose *.test.js",
+    "test": "cd dist/esm && TEST_MULTI=instance ava --verbose multi.test.js && TEST_MULTI=cluster ava --verbose multi.test.js && TEST_SINGLE=instance ava --verbose single.test.js && TEST_SINGLE=cluster ava --verbose single.test.js",
     "test:development": "cd dist/esm && ava --verbose --watch *.test.js",
     "prepare": "yarn build",
     "prepublishOnly": "yarn install && yarn lint && yarn build"
   },
   "dependencies": {
-    "node-abort-controller": "^3.0.1"
+    "node-abort-controller": "^3.1.1"
   },
   "type": "module"
 }

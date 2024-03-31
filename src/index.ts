@@ -349,7 +349,7 @@ export default class Redlock extends EventEmitter {
     // Check if lock already expired and quit early
     if (lock.expiration < Date.now()) {
       const attempts: Promise<ExecutionStats>[] = [];
-      return Promise.resolve({ attempts });
+      return Promise.resolve({ attempts, start: Date.now() });
     }
 
     // Immediately invalidate the lock.
@@ -371,13 +371,14 @@ export default class Redlock extends EventEmitter {
     duration: number,
     settings?: Partial<Settings>
   ): number {
-    // Add 2 milliseconds to the drift to account for Redis expires precision,
+    // Add 1 milliseconds to the drift to account for Redis expires precision,
     // which is 1 ms, plus the configured allowable drift factor.
-    return (
-      Math.round(
-        (settings?.driftFactor ?? this.settings.driftFactor) * duration
-      ) + 2
-    );
+    const driftFactor =
+      typeof settings?.driftFactor === "number" && settings.driftFactor > 0
+        ? settings?.driftFactor
+        : (this.settings.driftFactor > 0 && this.settings.driftFactor) ||
+          defaultSettings.driftFactor;
+    return Math.round(driftFactor * duration + 2);
   }
 
   /**
