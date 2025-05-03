@@ -1,6 +1,6 @@
 import { formatWithOptions } from "util";
 import test, { ExecutionContext } from "ava";
-import Redis, { Redis as Client, Cluster } from "ioredis";
+import Redis, { Redis as Client, Cluster } from "iovalkey";
 import Redlock, { ExecutionError, ResourceLockedError } from "./index.js";
 
 async function wait(ms: number): Promise<number> {

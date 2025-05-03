@@ -13,20 +13,20 @@ networks:
 services:
   # Multiple standalone instances. (highly availability, correct)
   redis-multi-instance-a:
-    image: redis:7
+    image: valkey/valkey:8
   redis-multi-instance-b:
-    image: redis:7
+    image: valkey/valkey:8
     depends_on:
       - redis-multi-instance-a
   redis-multi-instance-c:
-    image: redis:7
+    image: valkey/valkey:8
     depends_on:
       - redis-multi-instance-a
       - redis-multi-instance-b
 
 # Single standalone instance. (NOT highly available, correct)
   redis-single-instance:
-    image: redis:7
+    image: valkey/valkey:8
     depends_on:
       - redis-multi-instance-a
       - redis-multi-instance-b
@@ -34,80 +34,80 @@ services:
 
   # Single cluster. (highly availability, potentially incorrect)
   redis-single-cluster-1:
-    image: redis:7
+    image: valkey/valkey:8
     depends_on:
       - redis-single-instance
-    command: redis-server /etc/redis/redis.conf
+    command: valkey-server /usr/local/etc/valkey/valkey.conf
     volumes:
       - type: bind
         source: ./cluster.redis.conf
-        target: /etc/redis/redis.conf
+        target: /usr/local/etc/valkey/valkey.conf
     networks:
       redis:
         ipv4_address: 10.0.0.11
   redis-single-cluster-2:
-    image: redis:7
+    image: valkey/valkey:8
     depends_on:
       - redis-single-instance
-    command: redis-server /etc/redis/redis.conf
+    command: valkey-server /usr/local/etc/valkey/valkey.conf
     volumes:
       - type: bind
         source: ./cluster.redis.conf
-        target: /etc/redis/redis.conf
+        target: /usr/local/etc/valkey/valkey.conf
     networks:
       redis:
         ipv4_address: 10.0.0.12
   redis-single-cluster-3:
-    image: redis:7
+    image: valkey/valkey:8
     depends_on:
       - redis-single-instance
-    command: redis-server /etc/redis/redis.conf
+    command: valkey-server /usr/local/etc/valkey/valkey.conf
     volumes:
       - type: bind
         source: ./cluster.redis.conf
-        target: /etc/redis/redis.conf
+        target: /usr/local/etc/valkey/valkey.conf
     networks:
       redis:
         ipv4_address: 10.0.0.13
   redis-single-cluster-4:
-    image: redis:7
+    image: valkey/valkey:8
     depends_on:
       - redis-single-instance
-    command: redis-server /etc/redis/redis.conf
+    command: valkey-server /usr/local/etc/valkey/valkey.conf
     volumes:
       - type: bind
         source: ./cluster.redis.conf
-        target: /etc/redis/redis.conf
+        target: /usr/local/etc/valkey/valkey.conf
     networks:
       redis:
         ipv4_address: 10.0.0.14
   redis-single-cluster-5:
-    image: redis:7
+    image: valkey/valkey:8
     depends_on:
       - redis-single-instance
-    command: redis-server /etc/redis/redis.conf
+    command: valkey-server /usr/local/etc/valkey/valkey.conf
     volumes:
       - type: bind
         source: ./cluster.redis.conf
-        target: /etc/redis/redis.conf
+        target: /usr/local/etc/valkey/valkey.conf
     networks:
       redis:
         ipv4_address: 10.0.0.15
   redis-single-cluster-6:
-    image: redis:7
+    image: valkey/valkey:8
     depends_on:
       - redis-single-instance
-    command: redis-server /etc/redis/redis.conf
+    command: valkey-server /usr/local/etc/valkey/valkey.conf
     volumes:
       - type: bind
         source: ./cluster.redis.conf
-        target: /etc/redis/redis.conf
+        target: /usr/local/etc/valkey/valkey.conf
     networks:
       redis:
         ipv4_address: 10.0.0.16
   redis-single-cluster:
-    image: redis:7
-    command: redis-cli -p 6379 --cluster create 10.0.0.11:6379 10.0.0.12:6379 10.0.0.13:6379 10.0.0.14:6379 10.0.0.14:6379 10.0.0.16:6379 --cluster-replicas 1 --cluster-yes
+    image: valkey/valkey:8
+    command: valkey-cli -p 6379 --cluster create 10.0.0.11:6379 10.0.0.12:6379 10.0.0.13:6379 10.0.0.14:6379 10.0.0.14:6379 10.0.0.16:6379 --cluster-replicas 1 --cluster-yes
     depends_on:
       - redis-single-cluster-1
       - redis-single-cluster-2
@@ -124,44 +124,44 @@ services:
 
   # Multi cluster. (highly availability, correct, probably excessive)
   redis-multi-cluster-a-1:
-    image: redis:7
+    image: valkey/valkey:8
     depends_on:
       - redis-single-instance
-    command: redis-server /etc/redis/redis.conf
+    command: valkey-server /usr/local/etc/valkey/valkey.conf
     volumes:
       - type: bind
         source: ./cluster.redis.conf
-        target: /etc/redis/redis.conf
+        target: /usr/local/etc/valkey/valkey.conf
     networks:
       redis:
         ipv4_address: 10.0.1.11
   redis-multi-cluster-a-2:
-    image: redis:7
+    image: valkey/valkey:8
     depends_on:
       - redis-single-instance
-    command: redis-server /etc/redis/redis.conf
+    command: valkey-server /usr/local/etc/valkey/valkey.conf
     volumes:
       - type: bind
         source: ./cluster.redis.conf
-        target: /etc/redis/redis.conf
+        target: /usr/local/etc/valkey/valkey.conf
     networks:
       redis:
         ipv4_address: 10.0.1.12
   redis-multi-cluster-a-3:
-    image: redis:7
+    image: valkey/valkey:8
     depends_on:
       - redis-single-instance
-    command: redis-server /etc/redis/redis.conf
+    command: valkey-server /usr/local/etc/valkey/valkey.conf
     volumes:
       - type: bind
         source: ./cluster.redis.conf
-        target: /etc/redis/redis.conf
+        target: /usr/local/etc/valkey/valkey.conf
     networks:
       redis:
         ipv4_address: 10.0.1.13
   redis-multi-cluster-a:
-    image: redis:7
-    command: redis-cli -p 6379 --cluster create 10.0.1.11:6379 10.0.1.12:6379 10.0.1.13:6379 --cluster-replicas 0 --cluster-yes
+    image: valkey/valkey:8
+    command: valkey-cli -p 6379 --cluster create 10.0.1.11:6379 10.0.1.12:6379 10.0.1.13:6379 --cluster-replicas 0 --cluster-yes
     depends_on:
       - redis-multi-cluster-a-1
       - redis-multi-cluster-a-2
@@ -174,44 +174,44 @@ services:
         ipv4_address: 10.0.1.2
 
   redis-multi-cluster-b-1:
-    image: redis:7
+    image: valkey/valkey:8
     depends_on:
       - redis-single-instance
-    command: redis-server /etc/redis/redis.conf
+    command: valkey-server /usr/local/etc/valkey/valkey.conf
     volumes:
       - type: bind
         source: ./cluster.redis.conf
-        target: /etc/redis/redis.conf
+        target: /usr/local/etc/valkey/valkey.conf
     networks:
       redis:
         ipv4_address: 10.0.2.11
   redis-multi-cluster-b-2:
-    image: redis:7
+    image: valkey/valkey:8
     depends_on:
       - redis-single-instance
-    command: redis-server /etc/redis/redis.conf
+    command: valkey-server /usr/local/etc/valkey/valkey.conf
     volumes:
       - type: bind
         source: ./cluster.redis.conf
-        target: /etc/redis/redis.conf
+        target: /usr/local/etc/valkey/valkey.conf
     networks:
       redis:
         ipv4_address: 10.0.2.12
   redis-multi-cluster-b-3:
-    image: redis:7
+    image: valkey/valkey:8
     depends_on:
       - redis-single-instance
-    command: redis-server /etc/redis/redis.conf
+    command: valkey-server /usr/local/etc/valkey/valkey.conf
     volumes:
       - type: bind
         source: ./cluster.redis.conf
-        target: /etc/redis/redis.conf
+        target: /usr/local/etc/valkey/valkey.conf
     networks:
       redis:
         ipv4_address: 10.0.2.13
   redis-multi-cluster-b:
-    image: redis:7
-    command: redis-cli -p 6379 --cluster create 10.0.2.11:6379 10.0.2.12:6379 10.0.2.13:6379 --cluster-replicas 0 --cluster-yes
+    image: valkey/valkey:8
+    command: valkey-cli -p 6379 --cluster create 10.0.2.11:6379 10.0.2.12:6379 10.0.2.13:6379 --cluster-replicas 0 --cluster-yes
     depends_on:
       - redis-multi-cluster-b-1
       - redis-multi-cluster-b-2
@@ -224,44 +224,44 @@ services:
         ipv4_address: 10.0.2.2
 
   redis-multi-cluster-c-1:
-    image: redis:7
+    image: valkey/valkey:8
     depends_on:
       - redis-single-instance
-    command: redis-server /etc/redis/redis.conf
+    command: valkey-server /usr/local/etc/valkey/valkey.conf
     volumes:
       - type: bind
         source: ./cluster.redis.conf
-        target: /etc/redis/redis.conf
+        target: /usr/local/etc/valkey/valkey.conf
     networks:
       redis:
         ipv4_address: 10.0.3.11
   redis-multi-cluster-c-2:
-    image: redis:7
+    image: valkey/valkey:8
     depends_on:
       - redis-single-instance
-    command: redis-server /etc/redis/redis.conf
+    command: valkey-server /usr/local/etc/valkey/valkey.conf
     volumes:
       - type: bind
         source: ./cluster.redis.conf
-        target: /etc/redis/redis.conf
+        target: /usr/local/etc/valkey/valkey.conf
     networks:
       redis:
         ipv4_address: 10.0.3.12
   redis-multi-cluster-c-3:
-    image: redis:7
+    image: valkey/valkey:8
     depends_on:
       - redis-single-instance
-    command: redis-server /etc/redis/redis.conf
+    command: valkey-server /usr/local/etc/valkey/valkey.conf
     volumes:
       - type: bind
         source: ./cluster.redis.conf
-        target: /etc/redis/redis.conf
+        target: /usr/local/etc/valkey/valkey.conf
     networks:
       redis:
         ipv4_address: 10.0.3.13
   redis-multi-cluster-c:
-    image: redis:7
-    command: redis-cli -p 6379 --cluster create 10.0.3.11:6379 10.0.3.12:6379 10.0.3.13:6379 --cluster-replicas 0 --cluster-yes
+    image: valkey/valkey:8
+    command: valkey-cli -p 6379 --cluster create 10.0.3.11:6379 10.0.3.12:6379 10.0.3.13:6379 --cluster-replicas 0 --cluster-yes
     depends_on:
       - redis-multi-cluster-c-1
       - redis-multi-cluster-c-2

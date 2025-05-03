@@ -1,7 +1,7 @@
 /// <reference types="node" />
 /// <reference types="node" />
 import { EventEmitter } from "events";
-import { Redis as IORedisClient, Cluster as IORedisCluster } from "ioredis";
+import { Redis as IORedisClient, Cluster as IORedisCluster } from "iovalkey";
 type Client = IORedisClient | IORedisCluster;
 export type ClientExecutionResult = {
     client: Client;
